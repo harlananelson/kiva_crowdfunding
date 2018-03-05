@@ -3,6 +3,10 @@ title: "Data Science for Good: Kiva Crowdfunding"
 output: html_notebook
 ---
 
+Note that this code only works if you are working in a project and have a 
+data subdirectory with the data from Kiva.
+
+You need a file called library.R with with your library statments.
 ```{r}
 source('library.R')
 ```
@@ -24,6 +28,7 @@ loans <- Hmisc::dataframeReduce(loans)
 ```{r}
 Hmisc::contents(loans)
 ```
+
 ```{r}
 Hmisc::describe(loans)
 ```

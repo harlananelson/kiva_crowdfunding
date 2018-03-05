@@ -1,0 +1,184 @@
+---
+title: "Sollers Background Module: Basic Statistics Session"
+output: html_notebook
+---
+
+#R Studio Setup
+1. Use the file drop down menu to create a new project
+2. Go to Kaggle and download the Kiva crowd sourcing data set and put it in a *data*
+sub directory.
+3. Use File > New to open a new notebook
+4. Use File > New to open a new R script.  The the script library. Put your library
+commands in this file and source it in your notebooks.
+
+#Data Structure in R.
+The following shows some of the R data structure
+
+This is an atomic vector of real (double) numbers.
+```{r}
+x <- c( 1, 3, 5, 5, 6, 7, 9, 10)
+```
+
+Sort a vector using standard R.
+```{r}
+y <- x[order(x)]
+y
+
+```
+Index an element of a vector.
+```{r}
+y <- x[4]
+```
+
+```{r}
+y
+```
+The properties of an object are length, typeof and attributes.
+```{r}
+length(y)
+```
+Index using a vector.
+```{r}
+y[c(4,5)]
+```
+```{r}
+x[c(4,5)]
+```
+Make the methods of package ggplot2 available.
+```{r}
+library(ggplot2)
+```
+
+Create a data frame.
+```{r}
+d <- data.frame(x=x ) 
+d
+```
+plot a density curve.  A density curve is like a histogram.
+```{r}
+ggplot(aes(x),data=d) +
+  geom_density()
+```
+The sample variance is a function of the sum of the deviance from the mean.
+```{r}
+r <- (x - mean(x))^2
+```
+```{r}
+sum(r)/(length(x) - 1)
+```
+Get help on the function rnorm.
+```{r}
+?rnorm
+```
+
+##Look at the use of dnorm, pnorm, qnorm and rnorm.
+
+Simulate random normal variances.
+```{r}
+x <- rnorm(10000)
+print(x[1:20])
+d <- data.frame(x=x)
+```
+Create a normal curve using the normal random variables.
+```{r}
+ggplot(aes(x),data=d) +
+  geom_density()
+```
+Explore the use of dnorm.
+
+Create a grid of X values.
+```{r}
+s<-seq(-3,3,by=.001)
+```
+
+
+```{r}
+d2 <- data.frame(x = s,y=dnorm(s))
+d2[1:10,]
+```
+Create a box plot.  Usually there is a grouping variable.
+```{r}
+ggplot(d2) +
+  aes(x=x,y=y) + 
+  geom_boxplot()  
+```
+Slope in simple linear regression
+slope = $r * \frac{\sigma_y}{\sigma_x} $
+That means that the slope is related to the correlation between x and y.
+The error term is many times assumed to be normally distributed.
+
+Here is a norm distribution calculated using dnorm. 
+d is for distribution. d stands for distribution.
+```{r}
+ggplot(d2) +
+  aes(x=x,y=y) + 
+  geom_point()  +
+  geom_line()
+```
+
+
+
+What is pnorm used for? 
+The area under the curve is 1. 
+The area to the left of x=0 is 0.5
+```{r}
+pnorm(0)
+
+```
+The top of the curve is concave down.  The tails are concave up.
+The two points where the curve changes from being concave up to 
+concave down are called the inflection points.  
+There are at -1 and 1 on the standard normal curve (mean = 0 and variance = 1).
+```{r}
+pnorm(c(-1,1))
+```
+The area between the two inflection points is .68.
+```{r}
+pnorm(1) - pnorm(-1)
+```
+What does qnorm calculate.
+At what point on the x axis is the area to the left equal to 0.158?
+```{r}
+qnorm(0.158)
+```
+
+At what point is the area 0.841?
+```{r}
+qnorm(0.841)
+```
+
+At what x point is the area to the left .95 and the area to the right 0.05?
+This is the critical value for a one tailed hypothesis test with a
+significance level of 0.05.
+```{r}
+qnorm(.95)
+```
+What are the critical values for a two tailed hypothesis test with 
+a significance level (area in both tails) of 0.05. 
+```{r}
+qnorm(c(0.025,0.975))
+```
+```{r}
+qnorm(c(0.25,0.5,0.75))
+```
+Maximum likelihood.  
+If trials are independent then their individual probabilities can 
+be multiplied to get a join probability.
+The probability of the sequence of HHHT.
+Maximum likelihood select the value of p to make this function as 
+large as possible.
+Look at the values. The likelihood function is maximized when p=0.75.
+This makes sense because 3/4 = 0.75.
+```{r}
+p <- .5
+likelihood_f <-function(p){
+  p*p*p*(1-p)
+}
+search_grid <- seq(0,1,by=0.01)
+
+p_search<-data.frame(p = search_grid, likelihood_value = likelihood_f(search_grid))
+p_search
+                     
+```
+
+
